@@ -3,6 +3,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CyklovyletFrame extends JFrame{
@@ -15,14 +17,18 @@ public class CyklovyletFrame extends JFrame{
     private JMenuItem nacti;
     private JMenuItem refresh;
     private int indexSeznamu = 0;
-    private JFileChooser vyberSouboru = new JFileChooser();
+    private JFileChooser vyberSouboru = new JFileChooser(".");
+    private File selectedFile;
+    private List<Vylet> cyklovylet = new ArrayList<>();
+    public static final String oddelovac = ",";
 
 
     public CyklovyletFrame() {
+        menu();
         deleteBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                smaz();
             }
         });
     }
@@ -37,15 +43,17 @@ public class CyklovyletFrame extends JFrame{
         refresh = new JMenuItem("Refresh");
         menu.add(nacti);
         menu.add(refresh);
-        nacti.addActionListener(ActionListener -> nactiZeSouboru());
+        nacti.addActionListener(ActionListener -> openFile());
         refresh.addActionListener(ActionListener -> refreshSoubor());
+
+
     }
 
 
     private void openFile(){
         int vysledek = vyberSouboru.showOpenDialog(this);
         if (vysledek == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = vyberSouboru.getSelectedFile();
+            selectedFile = vyberSouboru.getSelectedFile();
             nactiZeSouboru();
         }
         else{
@@ -124,3 +132,7 @@ public class CyklovyletFrame extends JFrame{
         f.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }
+
+
+
+
